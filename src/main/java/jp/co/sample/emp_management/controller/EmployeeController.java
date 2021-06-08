@@ -49,13 +49,11 @@ public class EmployeeController {
 	@RequestMapping("/showList")
 	public String showList(String searchName,Model model) {
 		
-		if(searchName == "") {
-			List<Employee> employeeList = employeeService.showList();
-			model.addAttribute("employeeList", employeeList);
-		} else if(searchName != null){
+		if(searchName != null) {
+			
 			List<Employee> employeeList = employeeService.search(searchName);
 			model.addAttribute("employeeList", employeeList);
-			System.out.println(employeeList);
+			
 			if(employeeList.isEmpty()) {
 				List<Employee> employeeLists = employeeService.showList();
 				model.addAttribute("employeeList", employeeLists);
@@ -65,7 +63,6 @@ public class EmployeeController {
 			List<Employee> employeeList = employeeService.showList();
 			model.addAttribute("employeeList", employeeList);
 		}
-		
 		
 		return "employee/list";
 	}
