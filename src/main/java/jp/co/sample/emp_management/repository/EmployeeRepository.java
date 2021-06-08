@@ -56,6 +56,23 @@ public class EmployeeRepository {
 
 		return developmentList;
 	}
+	
+	/**
+	 * 従業員曖昧検索.
+	 * 
+	 * @param searchName
+	 * @return 従業員結果
+	 */
+	public List<Employee> findName(String searchName){
+		searchName = "%" + searchName + "%";
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE name LIKE :searchName ORDER BY hire_date";
+		
+		SqlParameterSource param = new MapSqlParameterSource().addValue("searchName", searchName);
+		
+		List<Employee> developmentList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+		
+		return developmentList;
+	}
 
 	/**
 	 * 主キーから従業員情報を取得します.
