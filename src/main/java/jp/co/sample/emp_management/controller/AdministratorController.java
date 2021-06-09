@@ -82,7 +82,7 @@ public class AdministratorController {
 		}
 		
 		if(!(form.getPassword().equals(form.getCheckPassword()))) {
-			FieldError fieldError = new FieldError(result.getObjectName(),"checkPassword","パスワードと確認用パスワードが不一致です");
+			FieldError fieldError = new FieldError(result.getObjectName(),"checkPassword","パスワードと確認パスワードが不一致です");
 			result.addError(fieldError);
 			return toInsert();
 		}
