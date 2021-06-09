@@ -20,8 +20,9 @@ public class InsertAdministratorForm {
 	private String password;
 	/** 確認用パスワード */
 	@NotBlank(message="確認パスワードは必須です")
-    private String checkPassword;
-	/**
+  private String checkPassword;
+
+  /**
 	 * @return the name
 	 */
 	public String getName() {

@@ -40,7 +40,7 @@
 						<li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員管理</a></li>
 					</ul>
 					<p class="navbar-text navbar-right">
-						<span th:text="${administratorName}">山田太郎</span>さんこんにちは！
+						<span th:text="${session.administratorName}">山田太郎</span>さんこんにちは！
 						&nbsp;&nbsp;&nbsp;
 						<a href="../administrator/login.html" class="navbar-link" th:href="@{/logout}">ログアウト</a>
 					</p>
@@ -53,6 +53,18 @@
 		<!-- パンくずリスト -->
 		<ol class="breadcrumb">
 			<li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員リスト</a></li>
+		</ol>
+		
+		<!-- 曖昧検索 -->
+		<ol class="breadcrumb">
+			  <li class="active">従業員検索：
+			   <form method="post" th:action="@{/employee/showList}">
+			    <input type="text" name="searchName" id="searchName">
+			    <button>検索</button>
+			    
+			    <span th:text="${serachNameMessage}"></span>
+			   </form>
+			  </li>
 		</ol>
 
 		<!-- table -->
