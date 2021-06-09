@@ -78,7 +78,7 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form,BindingResult result,RedirectAttributes redirectAttributes) throws SQLException{
+	public String insert(@Validated InsertAdministratorForm form,BindingResult result,RedirectAttributes redirectAttributes){
 		
 		if(result.hasErrors()) {
 			return toInsert();
