@@ -47,12 +47,17 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
-		model.addAttribute("employeeList", employeeList);
-		return "employee/list";
-	}
-
+	public String showList(String searchName,Model model) {
+			
+			List<Employee> employees = employeeService.search(searchName);
+			
+			if(employees.isEmpty()) {
+				model.addAttribute("serachNameMessage","１件もありませんでした");
+			    employees = employeeService.showList();
+			}
+			model.addAttribute("employeeList",employees);
+			return "employee/list";
+		}
 	
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員詳細を表示する
