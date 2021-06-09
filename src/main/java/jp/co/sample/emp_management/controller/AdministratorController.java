@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,6 +78,12 @@ public class AdministratorController {
 	public String insert(@Validated InsertAdministratorForm form,BindingResult result,RedirectAttributes redirectAttributes) {
 		
 		if(result.hasErrors()) {
+			return toInsert();
+		}
+		
+		if(!(form.getPassword().equals(form.getCheckPassword()))) {
+			FieldError fieldError = new FieldError(result.getObjectName(),"checkPassword","パスワードと確認用パスワードが不一致です");
+			result.addError(fieldError);
 			return toInsert();
 		}
 		
