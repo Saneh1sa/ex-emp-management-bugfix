@@ -33,6 +33,9 @@ public class EmployeeService {
 	}
 	
 	public List<Employee> search(String searchName){
+		if(searchName==null) {
+			searchName = "";
+		}
 		List<Employee> employeeList = employeeRepository.findName(searchName);
 		return employeeList;
 	}

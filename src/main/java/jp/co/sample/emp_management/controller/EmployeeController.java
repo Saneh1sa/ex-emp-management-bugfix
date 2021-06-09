@@ -48,25 +48,16 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/showList")
 	public String showList(String searchName,Model model) {
-		
-		if(searchName != null) {
 			
-			List<Employee> employeeList = employeeService.search(searchName);
-			model.addAttribute("employeeList", employeeList);
+			List<Employee> employees = employeeService.search(searchName);
 			
-			if(employeeList.isEmpty()) {
-				List<Employee> employeeLists = employeeService.showList();
-				model.addAttribute("employeeList", employeeLists);
+			if(employees.isEmpty()) {
 				model.addAttribute("serachNameMessage","１件もありませんでした");
+			    employees = employeeService.showList();
 			}
-		} else {
-			List<Employee> employeeList = employeeService.showList();
-			model.addAttribute("employeeList", employeeList);
+			model.addAttribute("employeeList",employees);
+			return "employee/list";
 		}
-		
-		return "employee/list";
-	}
-
 	
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員詳細を表示する
