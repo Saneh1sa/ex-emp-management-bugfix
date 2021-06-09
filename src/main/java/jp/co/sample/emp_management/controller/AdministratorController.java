@@ -1,9 +1,12 @@
 package jp.co.sample.emp_management.controller;
 
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -75,7 +78,7 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form,BindingResult result,RedirectAttributes redirectAttributes) {
+	public String insert(@Validated InsertAdministratorForm form,BindingResult result,RedirectAttributes redirectAttributes) throws SQLException{
 		
 		if(result.hasErrors()) {
 			return toInsert();
@@ -85,8 +88,8 @@ public class AdministratorController {
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
 		try {
-		administratorService.insert(administrator);
-		} catch(Exception e) {
+			administratorService.insert(administrator);
+		} catch(DuplicateKeyException e) {
 			FieldError emailError = new FieldError(result.getObjectName(),"mailAddress","そのメールアドレスは既に登録されています");
 			result.addError(emailError);
 			return toInsert();
