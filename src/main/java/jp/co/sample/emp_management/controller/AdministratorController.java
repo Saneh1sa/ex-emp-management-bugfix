@@ -1,12 +1,16 @@
 package jp.co.sample.emp_management.controller;
 
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,16 +78,28 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form,BindingResult result,RedirectAttributes redirectAttributes) {
+	public String insert(@Validated InsertAdministratorForm form,BindingResult result,RedirectAttributes redirectAttributes){
 		
 		if(result.hasErrors()) {
 			return toInsert();
 		}
 		
+		if(!(form.getPassword().equals(form.getCheckPassword()))) {
+			FieldError fieldError = new FieldError(result.getObjectName(),"checkPassword","パスワードと確認パスワードが不一致です");
+			result.addError(fieldError);
+			return toInsert();
+		}		
 		Administrator administrator = new Administrator();
+		
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		administratorService.insert(administrator);
+		try {
+			administratorService.insert(administrator);
+		} catch(DuplicateKeyException e) {
+			FieldError emailError = new FieldError(result.getObjectName(),"mailAddress","そのメールアドレスは既に登録されています");
+			result.addError(emailError);
+			return toInsert();
+		}
 		return "redirect:/";
 	}
 
@@ -116,6 +132,10 @@ public class AdministratorController {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
+		
+		session.setAttribute("administratorName", administrator.getName());
+
+    return "forward:/employee/showList";
 	}
 	
 	/////////////////////////////////////////////////////
