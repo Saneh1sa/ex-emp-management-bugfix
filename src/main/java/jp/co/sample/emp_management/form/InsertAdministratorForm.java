@@ -18,10 +18,11 @@ public class InsertAdministratorForm {
 	/** パスワード */
 	@NotBlank(message="パスワードは必須です")
 	private String password;
-	@NotBlank(message="確認用パスワードは必須です")
-	private String checkPassword;
+	/** 確認用パスワード */
+	@NotBlank(message="確認パスワードは必須です")
+  private String checkPassword;
 
-	/**
+  /**
 	 * @return the name
 	 */
 	public String getName() {
